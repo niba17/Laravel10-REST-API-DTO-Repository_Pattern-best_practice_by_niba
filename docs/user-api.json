@@ -96,9 +96,36 @@
                                                       "format": "date-time"
                                                 }
                                             }
-                                        },
-                                        "errors":{
-                                            "type":"object"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500":{
+                        "description":"Internal servel error",
+                        "content":{
+                            "application/json":{
+                                "examples":{
+                                    "error":{
+                                        "description":"Internal servel error",
+                                        "value":{
+                                            "error":[
+                                                "Internal server error"
+                                            ]
+                                        }
+                                    }
+                                },
+                                "schema":{
+                                    "type":"object",
+                                    "properties":{
+                                        "data":{
+                                            "type":"object",
+                                            "properties":{
+                                                "error":{
+                                                    "type":"string"
+                                                }
+                                            }
                                         }
                                     }
                                 }
@@ -138,7 +165,7 @@
                         "content":{
                             "application/json":{
                                 "examples":{
-                                    "success":{
+                                    "error":{
                                         "description":"Validation error",
                                         "value":{
                                             "nama":[
@@ -158,6 +185,55 @@
                                                 "Maksimal karakter Password adalah :max karakter!",
                                                 "Minimal karakter Password adalah :min karakter!"
                                             ]
+                                        }
+                                    }
+                                },
+                                "schema":{
+                                    "type":"object",
+                                    "properties":{
+                                        "data":{
+                                            "type":"object",
+                                            "properties":{
+                                                "nama":{
+                                                    "type":"string"
+                                                },
+                                                "email":{
+                                                    "type":"string"
+                                                },
+                                                "password":{
+                                                    "type":"string"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500":{
+                        "description":"Internal servel error",
+                        "content":{
+                            "application/json":{
+                                "examples":{
+                                    "error":{
+                                        "description":"Internal servel error",
+                                        "value":{
+                                            "error":[
+                                                "Internal server error"
+                                            ]
+                                        }
+                                    }
+                                },
+                                "schema":{
+                                    "type":"object",
+                                    "properties":{
+                                        "data":{
+                                            "type":"object",
+                                            "properties":{
+                                                "error":{
+                                                    "type":"string"
+                                                }
+                                            }
                                         }
                                     }
                                 }
@@ -197,9 +273,6 @@
                                                     "type":"string"
                                                 }
                                             }
-                                        },
-                                        "errors":{
-                                            "type":"object"
                                         }
                                     }
                                 }
@@ -212,6 +285,17 @@
         "/api/users/{id}":{
             "get":{
                 "description":"Find user",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the user to retrieve.",
+                        "required": true,
+                        "schema": {
+                        "type": "integer"
+                        }
+                    }
+                    ],
                 "responses":{
                     "200":{
                         "description":"Success find user",
@@ -246,14 +330,6 @@
                                                 "email":{
                                                     "type":"string"
                                                 },
-                                                "email_verified_at":{
-                                                      "type": "string",
-                                                      "format": "date-time"
-                                                },
-                                                "remember_token":{
-                                                      "type": "string",
-                                                      "format": "date-time"
-                                                },
                                                 "created_at":{
                                                       "type": "string",
                                                       "format": "date-time"
@@ -263,9 +339,6 @@
                                                       "format": "date-time"
                                                 }
                                             }
-                                        },
-                                        "errors":{
-                                            "type":"object"
                                         }
                                     }
                                 }
@@ -277,12 +350,55 @@
                         "content":{
                             "application/json":{
                                 "examples":{
-                                    "success":{
+                                    "error":{
                                         "description":"User not found",
                                         "value":{
-                                            "user_id":[
+                                            "error":[
                                                 "User tidak ditemukan!"
                                             ]
+                                        }
+                                    }
+                                },
+                                "schema":{
+                                    "type":"object",
+                                    "properties":{
+                                        "data":{
+                                            "type":"object",
+                                            "properties":{
+                                                "error":{
+                                                    "type":"string"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500":{
+                        "description":"Internal servel error",
+                        "content":{
+                            "application/json":{
+                                "examples":{
+                                    "error":{
+                                        "description":"Internal servel error",
+                                        "value":{
+                                            "error":[
+                                                "Internal server error"
+                                            ]
+                                        }
+                                    }
+                                },
+                                "schema":{
+                                    "type":"object",
+                                    "properties":{
+                                        "data":{
+                                            "type":"object",
+                                            "properties":{
+                                                "error":{
+                                                    "type":"string"
+                                                }
+                                            }
                                         }
                                     }
                                 }
@@ -293,6 +409,17 @@
             },
             "put":{
                 "description":"Update user",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the user to retrieve.",
+                        "required": true,
+                        "schema": {
+                        "type": "integer"
+                        }
+                    }
+                    ],
                 "requestBody":{
                     "description":"Update user",
                     "content":{
@@ -382,9 +509,36 @@
                                                       "format": "date-time"
                                                 }
                                             }
-                                        },
-                                        "errors":{
-                                            "type":"object"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500":{
+                        "description":"Internal servel error",
+                        "content":{
+                            "application/json":{
+                                "examples":{
+                                    "error":{
+                                        "description":"Internal servel error",
+                                        "value":{
+                                            "error":[
+                                                "Internal server error"
+                                            ]
+                                        }
+                                    }
+                                },
+                                "schema":{
+                                    "type":"object",
+                                    "properties":{
+                                        "data":{
+                                            "type":"object",
+                                            "properties":{
+                                                "error":{
+                                                    "type":"string"
+                                                }
+                                            }
                                         }
                                     }
                                 }
@@ -396,12 +550,25 @@
                         "content":{
                             "application/json":{
                                 "examples":{
-                                    "success":{
+                                    "error":{
                                         "description":"User not found",
                                         "value":{
-                                            "user_id":[
+                                            "error":[
                                                 "User tidak ditemukan!"
                                             ]
+                                        }
+                                    }
+                                },
+                                "schema":{
+                                    "type":"object",
+                                    "properties":{
+                                        "data":{
+                                            "type":"object",
+                                            "properties":{
+                                                "error":{
+                                                    "type":"string"
+                                                }
+                                            }
                                         }
                                     }
                                 }
@@ -413,7 +580,7 @@
                         "content":{
                             "application/json":{
                                 "examples":{
-                                    "success":{
+                                    "error":{
                                         "description":"Validatio error",
                                         "value":{
                                             "nama":[
@@ -435,6 +602,25 @@
                                             ]
                                         }
                                     }
+                                },
+                                "schema":{
+                                    "type":"object",
+                                    "properties":{
+                                        "data":{
+                                            "type":"object",
+                                            "properties":{
+                                                "nama":{
+                                                    "type":"string"
+                                                },
+                                                "email":{
+                                                    "type":"string"
+                                                },
+                                                "password":{
+                                                    "type":"string"
+                                                }
+                                            }
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -450,9 +636,9 @@
                             "application/json":{
                                 "examples":{
                                     "success":{
-                                        "description":"Success register new user",
+                                        "description":"Success delete user",
                                         "value":{
-                                            "user_id":[
+                                            "message":[
                                                 "User berhasil dihapus!"
                                             ]
                                         }
@@ -463,9 +649,6 @@
                                     "properties":{
                                         "data":{
                                             "type":"string"
-                                        },
-                                        "errors":{
-                                            "type":"object"
                                         }
                                     }
                                 }
@@ -477,12 +660,55 @@
                         "content":{
                             "application/json":{
                                 "examples":{
-                                    "success":{
+                                    "error":{
                                         "description":"User not found",
                                         "value":{
-                                            "user_id":[
+                                            "error":[
                                                 "User tidak ditemukan!"
                                             ]
+                                        }
+                                    }
+                                },
+                                "schema":{
+                                    "type":"object",
+                                    "properties":{
+                                        "data":{
+                                            "type":"object",
+                                            "properties":{
+                                                "error":{
+                                                    "type":"string"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500":{
+                        "description":"Internal servel error",
+                        "content":{
+                            "application/json":{
+                                "examples":{
+                                    "error":{
+                                        "description":"Internal servel error",
+                                        "value":{
+                                            "error":[
+                                                "Internal server error"
+                                            ]
+                                        }
+                                    }
+                                },
+                                "schema":{
+                                    "type":"object",
+                                    "properties":{
+                                        "data":{
+                                            "type":"object",
+                                            "properties":{
+                                                "error":{
+                                                    "type":"string"
+                                                }
+                                            }
                                         }
                                     }
                                 }
