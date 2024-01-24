@@ -47,7 +47,7 @@ class UserController extends Controller
             $user->save();
 
             return response()->json([
-                'data' => $user
+                'data' => $user->makeHidden(['id'])
             ], status: $this->response::HTTP_OK);
         } catch (\Exception $e) {
 
@@ -107,11 +107,10 @@ class UserController extends Controller
                     'password' => $request->password ? $this->hash::make($request->password) : $user->password,
                 ]);
 
-
                 $user->update($request->all());
 
                 return response()->json([
-                    'data' => $user
+                    'data' => $user->makeHidden(['id'])
                 ], status: $this->response::HTTP_OK);
             }
         } catch (\Exception $e) {

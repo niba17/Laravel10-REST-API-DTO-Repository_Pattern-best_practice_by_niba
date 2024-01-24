@@ -54,29 +54,30 @@ class UserRequest extends FormRequest
                     return [
                         'nama.required' => 'Nama harus diisi!',
                         'nama.unique' => 'Nama sudah ada!',
-                        'nama.max' => 'Maksimal karakter Nama :max!',
-                        'nama.min' => 'Minimal karakter Nama :min!',
+                        'nama.max' => 'Maksimal karakter Nama adalah :max karakter!',
+                        'nama.min' => 'Minimal karakter Nama adalah :min karakter!',
 
-                        'email.required' => 'Nama harus diisi!',
+                        'email.required' => 'Email harus diisi!',
+                        'email.email' => 'Email harus berformat email!',
                         'email.unique' => 'Email sudah ada!',
                         'email.max' => 'Maksimal karakter Email :max!',
 
                         'password.required' => 'Password harus diisi!',
-                        'password.max' => 'Maksimal karakter Password adalah :max!',
-                        'password.min' => 'Minimal karakter Password adalah :min!'
+                        'password.max' => 'Maksimal karakter Password adalah :max karakter!',
+                        'password.min' => 'Minimal karakter Password adalah :min karakter!'
                     ];
                 }
             case 'PUT': {
                     return [
                         'nama.unique' => 'Nama sudah ada!',
-                        'nama.max' => 'Maksimal karakter Nama adalah :max!',
-                        'nama.min' => 'Minimal karakter Nama adalah :min!',
+                        'nama.max' => 'Maksimal karakter Nama adalah :max karakter!',
+                        'nama.min' => 'Minimal karakter Nama adalah :min karakter!',
 
                         'email.unique' => 'Email sudah ada!',
                         'email.max' => 'Maksimal karakter Email :max!',
 
-                        'password.max' => 'Maksimal karakter Password adalah :max!',
-                        'password.min' => 'Minimal karakter Password adalah :min!'
+                        'password.max' => 'Maksimal karakter Password adalah :max karakter!',
+                        'password.min' => 'Minimal karakter Password adalah :min karakter!'
                     ];
                 }
             default:

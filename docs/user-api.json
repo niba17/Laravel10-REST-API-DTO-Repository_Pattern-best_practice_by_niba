@@ -1,0 +1,496 @@
+{
+    "openapi":"3.0.2",
+    "info":{
+        "title":"User API",
+        "description":"User API",
+        "version":"1.0"
+    },
+    "servers":[
+        {
+            "url":"http://localhost/8000"
+        }
+    ],
+    "paths":{
+        "/api/users":{
+            "get":{
+                "description":"Get all users",
+                "responses":{
+                    "200":{
+                        "description":"Success get all users",
+                        "content":{
+                            "application/json":{
+                                "examples":{
+                                    "success":{
+                                        "description":"Success register new user",
+                                        "value":{
+                                            "data":[
+                                                {
+                                                    "id": "9b27623a-df31-49c2-9e52-ffee2f95d4f8",
+                                                    "nama": "david luase",
+                                                    "email": "david@email.com",
+                                                    "email_verified_at": null,
+                                                    "remember_token": null,
+                                                    "created_at": "2024-01-22T14:42:20.000000Z",
+                                                    "updated_at": "2024-01-22T14:42:20.000000Z"
+                                                },
+                                                {
+                                                    "id": "9b2af4f6-a00f-478a-8c79-0ec05821fcf9",
+                                                    "nama": "mabilegi johnson",
+                                                    "email": "mabilegi@email.com",
+                                                    "email_verified_at": null,
+                                                    "remember_token": null,
+                                                    "created_at": "2024-01-24T09:20:07.000000Z",
+                                                    "updated_at": "2024-01-24T09:20:07.000000Z"
+                                                },
+                                                {
+                                                    "id": "9b2af573-5c2d-422b-9596-b19d315f9323",
+                                                    "nama": "rizal amuntoda",
+                                                    "email": "rizal@email.com",
+                                                    "email_verified_at": null,
+                                                    "remember_token": null,
+                                                    "created_at": "2024-01-24T09:21:29.000000Z",
+                                                    "updated_at": "2024-01-24T09:21:29.000000Z"
+                                                },
+                                                {
+                                                    "id": "9b2af5ba-c4d1-471f-849d-107044bedef1",
+                                                    "nama": "mae",
+                                                    "email": "mae@email.com",
+                                                    "email_verified_at": null,
+                                                    "remember_token": null,
+                                                    "created_at": "2024-01-24T09:21:29.000000Z",
+                                                    "updated_at": "2024-01-24T09:21:29.000000Z"
+                                                }
+                                            ]
+                                        }
+                                    }
+                                },
+                                "schema":{
+                                    "type":"object",
+                                    "properties":{
+                                        "data":{
+                                            "type":"object",
+                                            "properties":{
+                                                "id":{
+                                                    "type":"number"
+                                                },
+                                                "nama":{
+                                                    "type":"string"
+                                                },
+                                                "email":{
+                                                    "type":"string"
+                                                },
+                                                "email_verified_at":{
+                                                      "type": "string",
+                                                      "format": "date-time"
+                                                },
+                                                "remember_token":{
+                                                      "type": "string",
+                                                      "format": "date-time"
+                                                },
+                                                "created_at":{
+                                                      "type": "string",
+                                                      "format": "date-time"
+                                                },
+                                                "updated_at":{
+                                                      "type": "string",
+                                                      "format": "date-time"
+                                                }
+                                            }
+                                        },
+                                        "errors":{
+                                            "type":"object"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post":{
+                "description":"Register new user",
+                "requestBody":{
+                    "content":{
+                        "application/json":{
+                            "schema":{
+                                "type":"object",
+                                "required":[
+                                    "name", "email", "password"
+                                ],
+                                "properties":{
+                                    "nama":{
+                                        "type":"string"
+                                    },
+                                    "email":{
+                                        "type":"string"
+                                    },
+                                    "password":{
+                                        "type":"string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses":{
+                    "401":{
+                        "description":"Validation error",
+                        "content":{
+                            "application/json":{
+                                "examples":{
+                                    "success":{
+                                        "description":"Validation error",
+                                        "value":{
+                                            "nama":[
+                                                "Nama harus diisi!",
+                                                "Nama sudah ada!",
+                                                "Maksimal karakter Nama adalah :max karakter!",
+                                                "Minimal karakter Nama adalah :min karakter!"
+                                            ],
+                                            "email":[
+                                                "Email harus diisi!",
+                                                "Email harus berformat email!",
+                                                "Email sudah ada!",
+                                                "Maksimal karakter Email :max!"
+                                            ],
+                                            "password":[
+                                                "Password harus diisi!",
+                                                "Maksimal karakter Password adalah :max karakter!",
+                                                "Minimal karakter Password adalah :min karakter!"
+                                            ]
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "201":{
+                        "description":"Succes register new user",
+                        "content":{
+                            "application/json":{
+                                "examples":{
+                                    "success":{
+                                        "description":"Success register new user",
+                                        "value":{
+                                            "data":{
+                                                "nama":"david luase",
+                                                "email":"david@email.com",
+                                                "created_at":"2024-01-22T14:42:20.000000Z",
+                                                "updated_at":"2024-01-22T14:42:20.000000Z"
+                                            }
+                                        }
+                                    }
+                                },
+                                "schema":{
+                                    "type":"object",
+                                    "properties":{
+                                        "data":{
+                                            "type":"object",
+                                            "properties":{
+                                                "id":{
+                                                    "type":"number"
+                                                },
+                                                "nama":{
+                                                    "type":"string"
+                                                },
+                                                "email":{
+                                                    "type":"string"
+                                                }
+                                            }
+                                        },
+                                        "errors":{
+                                            "type":"object"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/users/{id}":{
+            "get":{
+                "description":"Find user",
+                "responses":{
+                    "200":{
+                        "description":"Success find user",
+                        "content":{
+                            "application/json":{
+                                "examples":{
+                                    "success":{
+                                        "description":"Success register new user",
+                                        "value":{
+                                            "data":{
+                                                "id":"9b27623a-df31-49c2-9e52-ffee2f95d4f8",
+                                                "nama":"david luase",
+                                                "email":"david@email.com",
+                                                "created_at":"2024-01-22T14:42:20.000000Z",
+                                                "updated_at":"2024-01-22T14:42:20.000000Z"
+                                            }
+                                        }
+                                    }
+                                },
+                                "schema":{
+                                    "type":"object",
+                                    "properties":{
+                                        "data":{
+                                            "type":"object",
+                                            "properties":{
+                                                "id":{
+                                                    "type":"number"
+                                                },
+                                                "nama":{
+                                                    "type":"string"
+                                                },
+                                                "email":{
+                                                    "type":"string"
+                                                },
+                                                "email_verified_at":{
+                                                      "type": "string",
+                                                      "format": "date-time"
+                                                },
+                                                "remember_token":{
+                                                      "type": "string",
+                                                      "format": "date-time"
+                                                },
+                                                "created_at":{
+                                                      "type": "string",
+                                                      "format": "date-time"
+                                                },
+                                                "updated_at":{
+                                                      "type": "string",
+                                                      "format": "date-time"
+                                                }
+                                            }
+                                        },
+                                        "errors":{
+                                            "type":"object"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400":{
+                        "description":"User not found",
+                        "content":{
+                            "application/json":{
+                                "examples":{
+                                    "success":{
+                                        "description":"User not found",
+                                        "value":{
+                                            "user_id":[
+                                                "User tidak ditemukan!"
+                                            ]
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put":{
+                "description":"Update user",
+                "requestBody":{
+                    "description":"Update user",
+                    "content":{
+                        "application/json":{
+                            "schema":{
+                                "type":"object",
+                                "properties":{
+                                    "name":{
+                                        "type":"string"
+                                    },
+                                    "email":{
+                                        "type":"string"
+                                    },
+                                    "password":{
+                                        "type":"string"
+                                    },
+                                    "email_verified_at":{
+                                          "type": "string",
+                                          "format": "date-time"
+                                    },
+                                    "remember_token":{
+                                          "type": "string",
+                                          "format": "date-time"
+                                    },
+                                    "created_at":{
+                                          "type": "string",
+                                          "format": "date-time"
+                                    },
+                                    "updated_at":{
+                                          "type": "string",
+                                          "format": "date-time"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses":{
+                    "200":{
+                        "description":"Success update user",
+                        "content":{
+                            "application/json":{
+                                "examples":{
+                                    "success":{
+                                        "description":"Success register new user",
+                                        "value":{
+                                            "data":{
+                                                "nama": "User 10",
+                                                "email": "user10@email.com",
+                                                "email_verified_at": null,
+                                                "remember_token": null,
+                                                "created_at": "2024-01-24T09:50:16.000000Z",
+                                                "updated_at": "2024-01-24T09:53:30.000000Z"
+                                            }
+                                        }
+                                    }
+                                },
+                                "schema":{
+                                    "type":"object",
+                                    "properties":{
+                                        "data":{
+                                            "type":"object",
+                                            "properties":{
+                                                "id":{
+                                                    "type":"number"
+                                                },
+                                                "nama":{
+                                                    "type":"string"
+                                                },
+                                                "email":{
+                                                    "type":"string"
+                                                },
+                                                "email_verified_at":{
+                                                      "type": "string",
+                                                      "format": "date-time"
+                                                },
+                                                "remember_token":{
+                                                      "type": "string",
+                                                      "format": "date-time"
+                                                },
+                                                "created_at":{
+                                                      "type": "string",
+                                                      "format": "date-time"
+                                                },
+                                                "updated_at":{
+                                                      "type": "string",
+                                                      "format": "date-time"
+                                                }
+                                            }
+                                        },
+                                        "errors":{
+                                            "type":"object"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400":{
+                        "description":"User not found",
+                        "content":{
+                            "application/json":{
+                                "examples":{
+                                    "success":{
+                                        "description":"User not found",
+                                        "value":{
+                                            "user_id":[
+                                                "User tidak ditemukan!"
+                                            ]
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401":{
+                        "description":"Validatio error",
+                        "content":{
+                            "application/json":{
+                                "examples":{
+                                    "success":{
+                                        "description":"Validatio error",
+                                        "value":{
+                                            "nama":[
+                                                "Nama harus diisi!",
+                                                "Nama sudah ada!",
+                                                "Maksimal karakter Nama adalah :max karakter!",
+                                                "Minimal karakter Nama adalah :min karakter!"
+                                            ],
+                                            "email":[
+                                                "Email harus diisi!",
+                                                "Email harus berformat email!",
+                                                "Email sudah ada!",
+                                                "Maksimal karakter Email :max!"
+                                            ],
+                                            "password":[
+                                                "Password harus diisi!",
+                                                "Maksimal karakter Password adalah :max karakter!",
+                                                "Minimal karakter Password adalah :min karakter!"
+                                            ]
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete":{
+                "description":"Delete user",
+                "responses":{
+                    "200":{
+                        "description":"Success delete user",
+                        "content":{
+                            "application/json":{
+                                "examples":{
+                                    "success":{
+                                        "description":"Success register new user",
+                                        "value":{
+                                            "user_id":[
+                                                "User berhasil dihapus!"
+                                            ]
+                                        }
+                                    }
+                                },
+                                "schema":{
+                                    "type":"object",
+                                    "properties":{
+                                        "data":{
+                                            "type":"string"
+                                        },
+                                        "errors":{
+                                            "type":"object"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400":{
+                        "description":"User not found",
+                        "content":{
+                            "application/json":{
+                                "examples":{
+                                    "success":{
+                                        "description":"User not found",
+                                        "value":{
+                                            "user_id":[
+                                                "User tidak ditemukan!"
+                                            ]
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
