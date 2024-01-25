@@ -3,25 +3,69 @@
     "info":{
         "title":"User API",
         "description":"User API",
-        "version":"1.0"
+        "version":"1.0",
+        "license": {
+            "name":"APACHE 2.0",
+            "url":"https://www.apache.org/licenses/LICENSE-2.0"
+        }
     },
     "servers":[
         {
             "url":"http://localhost/8000"
         }
     ],
+    "externalDocs": {
+        "description": "Flobamora Developer Tribe",
+        "url":"https://www.instagram.com/flobamoradevelopertribe/"
+    },
     "paths":{
         "/api/users":{
             "get":{
-                "description":"Get all users",
+                "summary":"Mengambil semua user",
+                "description":"Mengambil semua user dari database",
                 "responses":{
                     "200":{
-                        "description":"Success get all users",
+                        "description":"Sukses mengambil semua user",
                         "content":{
                             "application/json":{
+                                "schema":{
+                                    "type":"object",
+                                    "properties":{
+                                        "data":{
+                                            "type":"object",
+                                            "properties":{
+                                                "id":{
+                                                    "type":"number"
+                                                },
+                                                "nama":{
+                                                    "type":"string"
+                                                },
+                                                "email":{
+                                                    "type":"string"
+                                                },
+                                                "email_verified_at":{
+                                                      "type": "string",
+                                                      "format": "date-time"
+                                                },
+                                                "remember_token":{
+                                                      "type": "string",
+                                                      "format": "date-time"
+                                                },
+                                                "created_at":{
+                                                      "type": "string",
+                                                      "format": "date-time"
+                                                },
+                                                "updated_at":{
+                                                      "type": "string",
+                                                      "format": "date-time"
+                                                }
+                                            }
+                                        }
+                                    }
+                                },
                                 "examples":{
                                     "success":{
-                                        "description":"Success register new user",
+                                        "description":"Sukses mengambil semua user",
                                         "value":{
                                             "data":[
                                                 {
@@ -63,41 +107,6 @@
                                             ]
                                         }
                                     }
-                                },
-                                "schema":{
-                                    "type":"object",
-                                    "properties":{
-                                        "data":{
-                                            "type":"object",
-                                            "properties":{
-                                                "id":{
-                                                    "type":"number"
-                                                },
-                                                "nama":{
-                                                    "type":"string"
-                                                },
-                                                "email":{
-                                                    "type":"string"
-                                                },
-                                                "email_verified_at":{
-                                                      "type": "string",
-                                                      "format": "date-time"
-                                                },
-                                                "remember_token":{
-                                                      "type": "string",
-                                                      "format": "date-time"
-                                                },
-                                                "created_at":{
-                                                      "type": "string",
-                                                      "format": "date-time"
-                                                },
-                                                "updated_at":{
-                                                      "type": "string",
-                                                      "format": "date-time"
-                                                }
-                                            }
-                                        }
-                                    }
                                 }
                             }
                         }
@@ -135,8 +144,10 @@
                 }
             },
             "post":{
-                "description":"Register new user",
+                "summary":"Membuat user baru",
+                "description":"Membuat user ke database",
                 "requestBody":{
+                    "required": true,
                     "content":{
                         "application/json":{
                             "schema":{
@@ -241,12 +252,12 @@
                         }
                     },
                     "201":{
-                        "description":"Succes register new user",
+                        "description":"Sukses membuat user",
                         "content":{
                             "application/json":{
                                 "examples":{
                                     "success":{
-                                        "description":"Success register new user",
+                                        "description":"Sukses membuat user",
                                         "value":{
                                             "data":{
                                                 "nama":"david luase",
@@ -284,12 +295,13 @@
         },
         "/api/users/{id}":{
             "get":{
-                "description":"Find user",
+                "summary":"Mengambil user yang diperlukan",
+                "description":"Mengambil user yang diperlukan dari database",
                 "parameters": [
                     {
                         "name": "id",
                         "in": "path",
-                        "description": "ID of the user to retrieve.",
+                        "description": "id user untuk diambil",
                         "required": true,
                         "schema": {
                         "type": "integer"
@@ -298,12 +310,12 @@
                     ],
                 "responses":{
                     "200":{
-                        "description":"Success find user",
+                        "description":"Sukses mengambil user",
                         "content":{
                             "application/json":{
                                 "examples":{
                                     "success":{
-                                        "description":"Success register new user",
+                                        "description":"Sukses mengambil user",
                                         "value":{
                                             "data":{
                                                 "id":"9b27623a-df31-49c2-9e52-ffee2f95d4f8",
@@ -346,12 +358,12 @@
                         }
                     },
                     "400":{
-                        "description":"User not found",
+                        "description":"User tidak ditemukan",
                         "content":{
                             "application/json":{
                                 "examples":{
                                     "error":{
-                                        "description":"User not found",
+                                        "description":"User tidak ditemukan",
                                         "value":{
                                             "error":[
                                                 "User tidak ditemukan!"
@@ -408,18 +420,19 @@
                 }
             },
             "put":{
-                "description":"Update user",
+                "summary":"Mengubah user yang diperlukan",
+                "description":"Mengubah user yang diperlukan dari database",
                 "parameters": [
                     {
                         "name": "id",
                         "in": "path",
-                        "description": "ID of the user to retrieve.",
+                        "description": "id user untuk diubah",
                         "required": true,
                         "schema": {
                         "type": "integer"
                         }
                     }
-                    ],
+                ],
                 "requestBody":{
                     "description":"Update user",
                     "content":{
@@ -459,12 +472,12 @@
                 },
                 "responses":{
                     "200":{
-                        "description":"Success update user",
+                        "description":"Sukses mengubah user",
                         "content":{
                             "application/json":{
                                 "examples":{
                                     "success":{
-                                        "description":"Success register new user",
+                                        "description":"Sukses mengubah user",
                                         "value":{
                                             "data":{
                                                 "nama": "User 10",
@@ -546,12 +559,12 @@
                         }
                     },
                     "400":{
-                        "description":"User not found",
+                        "description":"User tidak ditemukan",
                         "content":{
                             "application/json":{
                                 "examples":{
                                     "error":{
-                                        "description":"User not found",
+                                        "description":"User tidak ditemukan",
                                         "value":{
                                             "error":[
                                                 "User tidak ditemukan!"
@@ -576,12 +589,12 @@
                         }
                     },
                     "401":{
-                        "description":"Validatio error",
+                        "description":"Validation error",
                         "content":{
                             "application/json":{
                                 "examples":{
                                     "error":{
-                                        "description":"Validatio error",
+                                        "description":"Validation error",
                                         "value":{
                                             "nama":[
                                                 "Nama harus diisi!",
@@ -628,15 +641,27 @@
                 }
             },
             "delete":{
-                "description":"Delete user",
+                "summary":"Menghapus user yang diperlukan",
+                "description":"Menghapus user yang diperlukan dari database",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "id user untuk dihapus",
+                        "required": true,
+                        "schema": {
+                        "type": "integer"
+                        }
+                    }
+                ],
                 "responses":{
                     "200":{
-                        "description":"Success delete user",
+                        "description":"Sukses menghapus user",
                         "content":{
                             "application/json":{
                                 "examples":{
                                     "success":{
-                                        "description":"Success delete user",
+                                        "description":"Sukses menghapus user",
                                         "value":{
                                             "message":[
                                                 "User berhasil dihapus!"
@@ -656,12 +681,12 @@
                         }
                     },
                     "400":{
-                        "description":"User not found",
+                        "description":"User tidak ditemukan",
                         "content":{
                             "application/json":{
                                 "examples":{
                                     "error":{
-                                        "description":"User not found",
+                                        "description":"User tidak ditemukan",
                                         "value":{
                                             "error":[
                                                 "User tidak ditemukan!"
