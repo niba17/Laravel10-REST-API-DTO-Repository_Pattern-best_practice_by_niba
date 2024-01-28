@@ -2,14 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\UserRequest;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Symfony\Component\HttpFoundation\Response;
-use App\Http\Requests\UserRequest;
 
 class UserController extends Controller
 {
-    protected $hash, $messages, $response, $userModel;
+    protected $hash;
+    protected $messages;
+    protected $response;
+    protected $userModel;
 
     public function __construct(Hash $hash, User $userModel, Response $response)
     {
@@ -27,12 +30,12 @@ class UserController extends Controller
             $user = $this->userModel->get();
 
             return response()->json([
-                'data' => $user
+                'data' => $user,
             ], status: $this->response::HTTP_OK);
         } catch (\Exception $e) {
 
             return response()->json([
-                'message' => $e->getMessage()
+                'message' => $e->getMessage(),
             ], status: $this->response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
@@ -47,12 +50,12 @@ class UserController extends Controller
             $user->save();
 
             return response()->json([
-                'data' => $user->makeHidden(['id'])
+                'data' => $user->makeHidden(['id']),
             ], status: $this->response::HTTP_OK);
         } catch (\Exception $e) {
 
             return response()->json([
-                'message' => $e->getMessage()
+                'message' => $e->getMessage(),
             ], status: $this->response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
@@ -69,18 +72,18 @@ class UserController extends Controller
                 array_push($this->messages['user_id'], 'User tidak ditemukan!');
 
                 return response()->json([
-                    'message' => $this->messages
+                    'message' => $this->messages,
                 ], status: $this->response::HTTP_BAD_REQUEST);
             } else {
 
                 return response()->json([
-                    'data' => $user
+                    'data' => $user,
                 ], status: $this->response::HTTP_OK);
             }
         } catch (\Exception $e) {
 
             return response()->json([
-                'message' => $e->getMessage()
+                'message' => $e->getMessage(),
             ], status: $this->response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
@@ -97,7 +100,7 @@ class UserController extends Controller
                 array_push($this->messages['user_id'], 'User tidak ditemukan!');
 
                 return response()->json([
-                    'message' => $this->messages
+                    'message' => $this->messages,
                 ], status: $this->response::HTTP_BAD_REQUEST);
             } else {
 
@@ -110,7 +113,7 @@ class UserController extends Controller
                 $user->update($request->all());
 
                 return response()->json([
-                    'data' => $user->makeHidden(['id'])
+                    'data' => $user->makeHidden(['id']),
                 ], status: $this->response::HTTP_OK);
             }
         } catch (\Exception $e) {
@@ -131,7 +134,7 @@ class UserController extends Controller
                 array_push($this->messages['user_id'], 'User tidak ditemukan!');
 
                 return response()->json([
-                    'message' => $this->messages
+                    'message' => $this->messages,
                 ], status: $this->response::HTTP_BAD_REQUEST);
             } else {
 
@@ -140,13 +143,13 @@ class UserController extends Controller
                 array_push($this->messages['user_id'], 'User berhasil dihapus!');
 
                 return response()->json([
-                    'message' => $this->messages
+                    'message' => $this->messages,
                 ], status: $this->response::HTTP_OK);
             }
         } catch (\Exception $e) {
 
             return response()->json([
-                'message' => $e->getMessage()
+                'message' => $e->getMessage(),
             ], status: $this->response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
