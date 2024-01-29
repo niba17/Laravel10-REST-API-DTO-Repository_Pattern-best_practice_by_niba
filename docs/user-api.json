@@ -298,15 +298,15 @@
                 "summary":"Mengambil user yang diperlukan",
                 "description":"Mengambil user yang diperlukan dari database",
                 "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "description": "id user untuk diambil",
-                        "required": true,
-                        "schema": {
-                        "type": "integer"
+                        {
+                            "name": "id",
+                            "in": "path",
+                            "description": "id user untuk diambil",
+                            "required": true,
+                            "schema": {
+                                "type": "integer"
+                            }
                         }
-                    }
                     ],
                 "responses":{
                     "200":{
@@ -429,7 +429,7 @@
                         "description": "id user untuk diubah",
                         "required": true,
                         "schema": {
-                        "type": "integer"
+                            "type": "integer"
                         }
                     }
                 ],
