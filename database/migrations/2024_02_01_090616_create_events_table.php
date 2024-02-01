@@ -15,6 +15,7 @@ return new class extends Migration {
             $table->string('name');
             $table->string('date');
             $table->uuid('event_type_uuid')->nullable();
+            $table->uuid('client_uuid');
             $table->uuid('song_uuid')->nullable();
             $table->uuid('village_uuid_1')->nullable();
             $table->uuid('village_uuid_2')->nullable();
@@ -22,6 +23,7 @@ return new class extends Migration {
             $table->string('lng');
             $table->timestamps();
 
+            $table->foreign('client_uuid')->references('uuid')->on('clients')->onDelete('cascade');
             $table->foreign('event_type_uuid')->references('uuid')->on('event_types')->onDelete('set null');
             $table->foreign('song_uuid')->references('uuid')->on('songs')->onDelete('set null');
             $table->foreign('village_uuid_1')->references('uuid')->on('villages')->onDelete('set null');

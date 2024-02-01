@@ -10,15 +10,13 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('guests', function (Blueprint $table) {
+        Schema::create('join_in_inviting', function (Blueprint $table) {
             $table->uuid('uuid')->unique()->primary();
-            $table->string('name');
-            $table->uuid('client_uuid');
-            $table->text('feedback')->nullable();
-            $table->text('pray')->nullable();
+            $table->uuid('event_id');
+            $table->string('family_name');
             $table->timestamps();
 
-            $table->foreign('client_uuid')->references('uuid')->on('clients')->onDelete('cascade');
+            $table->foreign('event_id')->references('uuid')->on('events')->onDelete('cascade');
         });
     }
 
@@ -27,6 +25,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('guests');
+        Schema::dropIfExists('join_in_inviting');
     }
 };

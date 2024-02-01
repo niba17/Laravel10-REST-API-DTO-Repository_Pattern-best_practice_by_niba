@@ -14,6 +14,7 @@ return new class extends Migration {
             $table->uuid('uuid')->unique()->primary();
             $table->uuid('guest_uuid');
             $table->uuid('event_uuid');
+            $table->string('desc');
             $table->boolean('status')->default(false);
             $table->uuid('invitation_type_uuid')->nullable();
             $table->timestamps();
