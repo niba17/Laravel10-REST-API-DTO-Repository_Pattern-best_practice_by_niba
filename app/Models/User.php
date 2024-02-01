@@ -2,37 +2,25 @@
 
 namespace App\Models;
 
-use Laravel\Sanctum\HasApiTokens;
-use Illuminate\Notifications\Notifiable;
-use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens;
 
-class Client extends Authenticatable
+class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, HasUuids, Notifiable, Sluggable;
-
-    public function sluggable(): array
-    {
-        return [
-            'slug' => [
-                'source' => 'identifier'
-            ]
-        ];
-    }
+    use HasApiTokens, HasFactory, HasUuids, Notifiable;
 
     /**
      * The attributes that are mass assignable.
      *
      * @var array<int, string>
      */
-    protected $primaryKey = 'uuid';
-    public $incrementing = false;
     protected $fillable = [
-        'identifier',
+        'username',
+        'email',
         'password',
-        'slug',
     ];
 
     /**
@@ -42,7 +30,7 @@ class Client extends Authenticatable
      */
     protected $hidden = [
         'password',
-        'remember_token',
+        // 'remember_token',
     ];
 
     /**
@@ -51,7 +39,7 @@ class Client extends Authenticatable
      * @var array<string, string>
      */
     protected $casts = [
-        'email_verified_at' => 'datetime',
+        // 'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
 }
