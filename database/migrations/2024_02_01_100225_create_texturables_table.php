@@ -10,9 +10,10 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('villages', function (Blueprint $table) {
+        Schema::create('texturables', function (Blueprint $table) {
             $table->uuid('uuid')->unique()->primary();
-            $table->string('name');
+            $table->uuid('texturable_uuid');
+            $table->string('texturable_type');
             $table->timestamps();
         });
     }
@@ -22,6 +23,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('villages');
+        Schema::dropIfExists('texturable');
     }
 };

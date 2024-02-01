@@ -10,13 +10,14 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('subdistricts', function (Blueprint $table) {
+        Schema::create('clients', function (Blueprint $table) {
             $table->uuid('uuid')->unique()->primary();
-            $table->string('name');
-            $table->uuid('districts_uuid')->nullable();
+            $table->string('identifier');
+            $table->string('password');
+            $table->string('slug');
+            $table->timestamp('email_verified_at')->nullable();
+            $table->rememberToken();
             $table->timestamps();
-
-            $table->foreign('districts_uuid')->references('uuid')->on('districts')->onDelete('set null');
         });
     }
 
@@ -25,6 +26,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('subdistricts');
+        Schema::dropIfExists('clients');
     }
 };

@@ -10,13 +10,14 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('subdistricts', function (Blueprint $table) {
+        Schema::create('guests', function (Blueprint $table) {
             $table->uuid('uuid')->unique()->primary();
             $table->string('name');
-            $table->uuid('districts_uuid')->nullable();
+            $table->uuid('client_uuid');
+            $table->text('feedback')->nullable();
             $table->timestamps();
 
-            $table->foreign('districts_uuid')->references('uuid')->on('districts')->onDelete('set null');
+            $table->foreign('client_uuid')->references('uuid')->on('clients')->onDelete('cascade');
         });
     }
 
@@ -25,6 +26,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('subdistricts');
+        Schema::dropIfExists('guests');
     }
 };
