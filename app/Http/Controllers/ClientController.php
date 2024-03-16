@@ -2,155 +2,75 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Client;
+use Illuminate\Http\JsonResponse;
 use App\Http\Requests\ClientRequest;
-use Illuminate\Support\Facades\Hash;
-use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\HttpException;
+use App\Repositories\Interfaces\ClientRepositoryInterface;
 
 class ClientController extends Controller
 {
-    protected $hash;
-    protected $messages;
-    protected $response;
-    protected $clientModel;
+    private $clientRepInt;
+    private $res;
 
-    public function __construct(Hash $hash, Client $clientModel, Response $response)
+    public function __construct(ClientRepositoryInterface $clientRepInt, JsonResponse $res)
     {
-        $this->hash = $hash;
-        $this->response = $response;
-        $this->clientModel = $clientModel;
-        $this->messages['client_uuid'] = [];
+        $this->clientRepInt = $clientRepInt;
+        $this->res = $res;
     }
 
-    public function index()
+    public function index(): JsonResponse
     {
-
         try {
+            $result = $this->clientRepInt->all();
 
-            $client = $this->clientModel->get();
+            return new $this->res(['data' => $result->original], $result->getStatusCode());
+        } catch (HttpException $exception) {
+            return new $this->res(['error' => $exception->getMessage()], $exception->getStatusCode());
+        }
 
-            return response()->json([
-                'data' => $client,
-            ], status: $this->response::HTTP_OK);
-        } catch (\Exception $e) {
+    }
 
-            return response()->json([
-                'message' => $e->getMessage(),
-            ], status: $this->response::HTTP_INTERNAL_SERVER_ERROR);
+    public function store(ClientRequest $request): JsonResponse
+    {
+        try {
+            $result = $this->clientRepInt->save($request);
+
+            return new $this->res(['data' => $result->original], $result->getStatusCode());
+        } catch (HttpException $exception) {
+            return $this->res(['error' => $exception->getMessage()], $exception->getStatusCode());
         }
     }
 
-    public function store(ClientRequest $request)
+    public function show($uuid): JsonResponse
     {
-
         try {
+            $result = $this->clientRepInt->show($uuid);
 
-            $client = $this->clientModel->make($request->all());
-            $client->password = $this->hash::make($request->password);
-            $client->save();
-
-            return response()->json([
-                'data' => $client->makeHidden(['uuid']),
-            ], status: $this->response::HTTP_OK);
-        } catch (\Exception $e) {
-
-            return response()->json([
-                'message' => $e->getMessage(),
-            ], status: $this->response::HTTP_INTERNAL_SERVER_ERROR);
+            return new $this->res(['data' => $result->original], $result->getStatusCode());
+        } catch (HttpException $exception) {
+            return response()->json(['error' => $exception->getMessage()], $exception->getStatusCode());
         }
     }
 
-    public function show($client_uuid)
+    public function update(ClientRequest $request, $uuid): JsonResponse
     {
-
         try {
+            $result = $this->clientRepInt->update($request, $uuid);
 
-            $user = $this->clientModel->find($client_uuid);
-
-            if (!$user) {
-
-                array_push($this->messages['client_uuid'], 'Client tidak ditemukan!');
-
-                return response()->json([
-                    'message' => $this->messages,
-                ], status: $this->response::HTTP_BAD_REQUEST);
-            } else {
-
-                return response()->json([
-                    'data' => $user,
-                ], status: $this->response::HTTP_OK);
-            }
-        } catch (\Exception $e) {
-
-            return response()->json([
-                'message' => $e->getMessage(),
-            ], status: $this->response::HTTP_INTERNAL_SERVER_ERROR);
+            return new $this->res(['data' => $result->original], $result->getStatusCode());
+        } catch (HttpException $exception) {
+            return new $this->res(['error' => $exception->getMessage()], $exception->getStatusCode());
         }
     }
 
-    public function update(ClientRequest $request, $client_uuid)
+    public function destroy($uuid): JsonResponse
     {
-
         try {
+            $result = $this->clientRepInt->delete($uuid);
 
-            $client = $this->clientModel->find($client_uuid);
-
-            if (!$client) {
-
-                array_push($this->messages['client_uuid'], 'Client tidak ditemukan!');
-
-                return response()->json([
-                    'message' => $this->messages,
-                ], status: $this->response::HTTP_BAD_REQUEST);
-            } else {
-
-                $request->merge([
-                    'identifier' => $request->identifier ?? $client->identifier,
-                    'password' => $request->password ? $this->hash::make($request->password) : $client->password,
-                    'slug' => null,
-                ]);
-
-                $client->update($request->all());
-
-                return response()->json([
-                    'data' => $client->makeHidden(['uuid']),
-                ], status: $this->response::HTTP_OK);
-            }
-        } catch (\Exception $e) {
-
-            return response()->json(['message' => $e->getMessage()], $this->response::HTTP_INTERNAL_SERVER_ERROR);
-        }
-    }
-
-    public function destroy($client_uuid)
-    {
-
-        try {
-
-            $client = $this->clientModel->find($client_uuid);
-
-            if (!$client) {
-
-                array_push($this->messages['client_uuid'], 'Client tidak ditemukan!');
-
-                return response()->json([
-                    'message' => $this->messages,
-                ], status: $this->response::HTTP_BAD_REQUEST);
-            } else {
-
-                $client->delete();
-
-                array_push($this->messages['client_uuid'], 'Client berhasil dihapus!');
-
-                return response()->json([
-                    'message' => $this->messages,
-                ], status: $this->response::HTTP_OK);
-            }
-        } catch (\Exception $e) {
-
-            return response()->json([
-                'message' => $e->getMessage(),
-            ], status: $this->response::HTTP_INTERNAL_SERVER_ERROR);
+            return new $this->res(['data' => $result->original], $result->getStatusCode());
+        } catch (HttpException $exception) {
+            return new $this->res(['error' => $exception->getMessage()], $exception->getStatusCode());
         }
     }
 }

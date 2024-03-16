@@ -16,7 +16,7 @@ return new class extends Migration {
             $table->string('family_name');
             $table->timestamps();
 
-            $table->foreign('event_id')->references('uuid')->on('events')->onDelete('cascade');
+            $table->foreign('event_id')->references('uuid')->on('events')->onDelete('cascade')->onUpdate('cascade');
         });
     }
 

@@ -19,9 +19,9 @@ return new class extends Migration {
             $table->uuid('invitation_type_uuid')->nullable();
             $table->timestamps();
 
-            $table->foreign('event_uuid')->references('uuid')->on('events')->onDelete('cascade');
-            $table->foreign('guest_uuid')->references('uuid')->on('guests')->onDelete('cascade');
-            $table->foreign('invitation_type_uuid')->references('uuid')->on('invitation_types')->onDelete('set null');
+            $table->foreign('event_uuid')->references('uuid')->on('events')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('guest_uuid')->references('uuid')->on('guests')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('invitation_type_uuid')->references('uuid')->on('invitation_types')->onDelete('set null')->onUpdate('cascade');
         });
     }
 

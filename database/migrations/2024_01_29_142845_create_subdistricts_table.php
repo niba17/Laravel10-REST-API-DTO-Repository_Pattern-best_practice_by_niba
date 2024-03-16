@@ -16,7 +16,7 @@ return new class extends Migration {
             $table->uuid('districts_uuid')->nullable();
             $table->timestamps();
 
-            $table->foreign('districts_uuid')->references('uuid')->on('districts')->onDelete('set null');
+            $table->foreign('districts_uuid')->references('uuid')->on('districts')->onDelete('set null')->onUpdate('cascade');
         });
     }
 

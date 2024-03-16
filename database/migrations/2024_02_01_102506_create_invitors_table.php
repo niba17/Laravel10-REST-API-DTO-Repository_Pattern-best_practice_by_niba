@@ -21,7 +21,7 @@ return new class extends Migration {
             $table->text('desc')->nullable();
             $table->timestamps();
 
-            $table->foreign('client_uuid')->references('uuid')->on('clients')->onDelete('cascade');
+            $table->foreign('client_uuid')->references('uuid')->on('clients')->onDelete('cascade')->onUpdate('cascade');
         });
     }
 

@@ -23,11 +23,11 @@ return new class extends Migration {
             $table->string('lng');
             $table->timestamps();
 
-            $table->foreign('client_uuid')->references('uuid')->on('clients')->onDelete('cascade');
-            $table->foreign('event_type_uuid')->references('uuid')->on('event_types')->onDelete('set null');
-            $table->foreign('song_uuid')->references('uuid')->on('songs')->onDelete('set null');
-            $table->foreign('village_uuid_1')->references('uuid')->on('villages')->onDelete('set null');
-            $table->foreign('village_uuid_2')->references('uuid')->on('villages')->onDelete('set null');
+            $table->foreign('client_uuid')->references('uuid')->on('clients')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('event_type_uuid')->references('uuid')->on('event_types')->onDelete('set null')->onUpdate('cascade');
+            $table->foreign('song_uuid')->references('uuid')->on('songs')->onDelete('set null')->onUpdate('cascade');
+            $table->foreign('village_uuid_1')->references('uuid')->on('villages')->onDelete('set null')->onUpdate('cascade');
+            $table->foreign('village_uuid_2')->references('uuid')->on('villages')->onDelete('set null')->onUpdate('cascade');
         });
     }
 

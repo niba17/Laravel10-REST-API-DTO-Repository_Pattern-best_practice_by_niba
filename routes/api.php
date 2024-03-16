@@ -1,9 +1,13 @@
 <?php
 
-use App\Http\Controllers\UserController;
-use App\Http\Controllers\ClientController;
-// use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\SongController;
+use App\Http\Controllers\UserController;
+// use Illuminate\Http\Request;
+use App\Http\Controllers\EventController;
+use App\Http\Controllers\ClientController;
+use App\Http\Controllers\EventTypeController;
+use App\Http\Controllers\InvitationTypeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,3 +26,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::apiResource('users', UserController::class);
 Route::apiResource('clients', ClientController::class);
+Route::apiResource('event_types', EventTypeController::class);
+Route::apiResource('events', EventController::class);
+Route::apiResource('songs', SongController::class);
+Route::apiResource('invitation_types', InvitationTypeController::class);
