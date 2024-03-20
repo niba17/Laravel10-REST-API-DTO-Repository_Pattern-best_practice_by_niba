@@ -5,23 +5,23 @@ namespace App\Http\Controllers;
 use Illuminate\Http\JsonResponse;
 use App\Http\Requests\ClientRequest;
 use Symfony\Component\HttpKernel\Exception\HttpException;
-use App\Repositories\Interfaces\ClientRepositoryInterface;
+use App\Contracts\ClientServiceInterface;
 
 class ClientController extends Controller
 {
-    private $clientRepInt;
+    private $clientService;
     private $res;
 
-    public function __construct(ClientRepositoryInterface $clientRepInt, JsonResponse $res)
+    public function __construct(ClientServiceInterface $clientService, JsonResponse $res)
     {
-        $this->clientRepInt = $clientRepInt;
+        $this->clientService = $clientService;
         $this->res = $res;
     }
 
     public function index(): JsonResponse
     {
         try {
-            $result = $this->clientRepInt->all();
+            $result = $this->clientService->all();
 
             return new $this->res(['data' => $result->original], $result->getStatusCode());
         } catch (HttpException $exception) {
@@ -33,7 +33,7 @@ class ClientController extends Controller
     public function store(ClientRequest $request): JsonResponse
     {
         try {
-            $result = $this->clientRepInt->save($request);
+            $result = $this->clientService->save($request);
 
             return new $this->res(['data' => $result->original], $result->getStatusCode());
         } catch (HttpException $exception) {
@@ -44,18 +44,18 @@ class ClientController extends Controller
     public function show($uuid): JsonResponse
     {
         try {
-            $result = $this->clientRepInt->show($uuid);
+            $result = $this->clientService->show($uuid);
 
             return new $this->res(['data' => $result->original], $result->getStatusCode());
         } catch (HttpException $exception) {
-            return response()->json(['error' => $exception->getMessage()], $exception->getStatusCode());
+            return new $this->res(['error' => $exception->getMessage()], $exception->getStatusCode());
         }
     }
 
     public function update(ClientRequest $request, $uuid): JsonResponse
     {
         try {
-            $result = $this->clientRepInt->update($request, $uuid);
+            $result = $this->clientService->update($request, $uuid);
 
             return new $this->res(['data' => $result->original], $result->getStatusCode());
         } catch (HttpException $exception) {
@@ -66,7 +66,7 @@ class ClientController extends Controller
     public function destroy($uuid): JsonResponse
     {
         try {
-            $result = $this->clientRepInt->delete($uuid);
+            $result = $this->clientService->delete($uuid);
 
             return new $this->res(['data' => $result->original], $result->getStatusCode());
         } catch (HttpException $exception) {

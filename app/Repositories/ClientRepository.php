@@ -3,13 +3,13 @@
 namespace App\Repositories;
 
 use App\Models\Client;
+use Illuminate\Http\JsonResponse;
+use App\Contracts\ClientServiceInterface;
 use App\Http\Resources\ClientResource;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Symfony\Component\HttpKernel\Exception\HttpException;
-use App\Repositories\Interfaces\ClientRepositoryInterface;
-use Illuminate\Http\JsonResponse;
 
-class ClientRepository implements ClientRepositoryInterface
+class ClientRepository implements ClientServiceInterface
 {
     private $client;
     private $res;
@@ -27,11 +27,10 @@ class ClientRepository implements ClientRepositoryInterface
 
             $resource = ClientResource::collection($client);
 
-            return new $this->res(['data' => $resource], $this->res::HTTP_OK);
+            return new $this->res($resource, $this->res::HTTP_OK);
         } catch (\Throwable) {
             throw new HttpException($this->res::HTTP_INTERNAL_SERVER_ERROR, 'Terjadi kesalahan di server internal');
         }
-
     }
 
     public function save($request)

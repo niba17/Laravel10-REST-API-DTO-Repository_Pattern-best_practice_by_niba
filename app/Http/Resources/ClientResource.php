@@ -2,17 +2,11 @@
 
 namespace App\Http\Resources;
 
-use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class ClientResource extends JsonResource
 {
-    /**
-     * Transform the resource into an array.
-     *
-     * @return array<string, mixed>
-     */
-    public function toArray(Request $request): array
+    public function toArray($request): array
     {
         return [
             'uuid' => $this->uuid,
@@ -28,4 +22,3 @@ class ClientResource extends JsonResource
         ];
     }
 }
-// 2024-02-04 13:20:54
