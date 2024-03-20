@@ -24,9 +24,9 @@ use App\Http\Controllers\InvitationTypeController;
 //     return $request->user();
 // });
 
-Route::apiResource('users', UserController::class);
+// Route::apiResource('users', UserController::class);
 Route::apiResource('clients', ClientController::class);
-Route::apiResource('event_types', EventTypeController::class);
-Route::apiResource('events', EventController::class);
-Route::apiResource('songs', SongController::class);
-Route::apiResource('invitation_types', InvitationTypeController::class);
+// Route::apiResource('event_types', EventTypeController::class);
+// Route::apiResource('events', EventController::class);
+// Route::apiResource('songs', SongController::class);
+// Route::apiResource('invitation_types', InvitationTypeController::class);

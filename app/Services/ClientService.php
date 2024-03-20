@@ -19,58 +19,36 @@ class ClientService
 
     public function all()
     {
-        try {
-            $client = $this->clientRepository->all();
+        $client = $this->clientRepository->all();
 
-            return $client;
-        } catch (HttpException $exception) {
-            return $exception;
-        }
+        return $client;
     }
 
     public function save($request)
     {
-        try {
-            $client = $this->clientRepository->save($request);
+        $client = $this->clientRepository->save($request);
 
-            return $client;
-        } catch (HttpException $exception) {
-            return $exception;
-        }
+        return $client;
     }
 
     public function show($uuid)
     {
-        try {
-            $client = $this->clientRepository->show($uuid);
+        $client = $this->clientRepository->show($uuid);
 
-            return $client;
-        } catch (HttpException $exception) {
-            return $exception;
-        }
+        return $client;
     }
 
     public function update($request, $uuid)
     {
+        $client = $this->clientRepository->show($uuid);
 
-        try {
-            $client = $this->clientRepository->show($uuid);
-
-            return $client;
-        } catch (HttpException $exception) {
-            return $exception;
-        }
+        return $client;
     }
 
     public function delete($uuid)
     {
+        $client = $this->clientRepository->delete($uuid);
 
-        try {
-            $client = $this->clientRepository->delete($uuid);
-
-            return $client;
-        } catch (HttpException $exception) {
-            return $exception;
-        }
+        return $client;
     }
 }

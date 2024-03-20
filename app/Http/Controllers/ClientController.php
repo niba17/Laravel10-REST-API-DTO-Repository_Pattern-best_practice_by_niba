@@ -37,7 +37,7 @@ class ClientController extends Controller
 
             return new $this->res(['data' => $result->original], $result->getStatusCode());
         } catch (HttpException $exception) {
-            return $this->res(['error' => $exception->getMessage()], $exception->getStatusCode());
+            return new $this->res(['error' => $exception->getMessage()], $exception->getStatusCode());
         }
     }
 
