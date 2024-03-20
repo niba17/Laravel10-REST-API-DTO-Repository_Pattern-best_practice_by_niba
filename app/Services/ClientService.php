@@ -6,7 +6,7 @@ use App\Models\Client;
 use App\Contracts\ClientServiceInterface;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
-class ClientService implements ClientServiceInterface
+class ClientService
 {
     private $client;
     private $clientRepository;
