@@ -2,11 +2,10 @@
 
 namespace App\Services;
 
-use App\dataTransferObject\ClientDTO;
-use App\Http\Requests\ClientRequest;
 use App\Models\Client;
-use App\Contracts\ClientRepositoryInterface;
 use Illuminate\Http\JsonResponse;
+use App\dataTransferObject\ClientDTO;
+use App\Contracts\ClientRepositoryInterface;
 
 class ClientService
 {
@@ -26,7 +25,7 @@ class ClientService
         return $client;
     }
 
-    public function save(ClientRequest $request): JsonResponse
+    public function save(ClientDTO $request): JsonResponse
     {
         $client = $this->repository->save($request);
 
@@ -40,7 +39,7 @@ class ClientService
         return $client;
     }
 
-    public function update($request, $uuid): JsonResponse
+    public function update(ClientDTO $request, $uuid): JsonResponse
     {
         $client = $this->repository->update($uuid);
 
