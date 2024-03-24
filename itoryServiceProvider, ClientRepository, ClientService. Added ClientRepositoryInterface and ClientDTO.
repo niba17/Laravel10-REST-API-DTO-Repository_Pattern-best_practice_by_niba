@@ -1,0 +1,342 @@
+[1mdiff --git a/app/Contracts/ClientRepositoryInterface.php b/app/Contracts/ClientRepositoryInterface.php[m
+[1mnew file mode 100644[m
+[1mindex 0000000..02116a8[m
+[1m--- /dev/null[m
+[1m+++ b/app/Contracts/ClientRepositoryInterface.php[m
+[36m@@ -0,0 +1,15 @@[m
+[32m+[m[32m<?php[m
+[32m+[m
+[32m+[m[32mnamespace App\Contracts;[m
+[32m+[m
+[32m+[m[32muse Illuminate\Http\JsonResponse;[m
+[32m+[m[32muse App\dataTransferObject\ClientDTO;[m
+[32m+[m
+[32m+[m[32minterface ClientRepositoryInterface[m
+[32m+[m[32m{[m
+[32m+[m[32m    public function all(): JsonResponse;[m
+[32m+[m[32m    public function show($uuid): JsonResponse;[m
+[32m+[m[32m    public function save(ClientDTO $request): JsonResponse;[m
+[32m+[m[32m    public function update(ClientDTO $request, $uuid): JsonResponse;[m
+[32m+[m[32m    public function delete($uuid): JsonResponse;[m
+[32m+[m[32m}[m
+[1mdiff --git a/app/Http/Controllers/ClientController.php b/app/Http/Controllers/ClientController.php[m
+[1mindex 8983466..33abb67 100644[m
+[1m--- a/app/Http/Controllers/ClientController.php[m
+[1m+++ b/app/Http/Controllers/ClientController.php[m
+[36m@@ -4,24 +4,25 @@[m
+ [m
+ use Illuminate\Http\JsonResponse;[m
+ use App\Http\Requests\ClientRequest;[m
+[32m+[m[32muse App\dataTransferObject\ClientDTO;[m
+[32m+[m[32muse App\Contracts\ClientRepositoryInterface;[m
+ use Symfony\Component\HttpKernel\Exception\HttpException;[m
+[31m-use App\Contracts\ClientServiceInterface;[m
+ [m
+ class ClientController extends Controller[m
+ {[m
+[31m-    private $clientService;[m
+[32m+[m[32m    private $service;[m
+     private $res;[m
+ [m
+[31m-    public function __construct(ClientServiceInterface $clientService, JsonResponse $res)[m
+[32m+[m[32m    public function __construct(ClientRepositoryInterface $service, JsonResponse $res)[m
+     {[m
+[31m-        $this->clientService = $clientService;[m
+[32m+[m[32m        $this->service = $service;[m
+         $this->res = $res;[m
+     }[m
+ [m
+     public function index(): JsonResponse[m
+     {[m
+         try {[m
+[31m-            $result = $this->clientService->all();[m
+[32m+[m[32m            $result = $this->service->all();[m
+ [m
+             return new $this->res(['data' => $result->original], $result->getStatusCode());[m
+         } catch (HttpException $exception) {[m
+[36m@@ -33,7 +34,7 @@[m [mpublic function index(): JsonResponse[m
+     public function store(ClientRequest $request): JsonResponse[m
+     {[m
+         try {[m
+[31m-            $result = $this->clientService->save($request);[m
+[32m+[m[32m            $result = $this->service->save(ClientDTO::apiRequest($request));[m
+ [m
+             return new $this->res(['data' => $result->original], $result->getStatusCode());[m
+         } catch (HttpException $exception) {[m
+[36m@@ -44,7 +45,7 @@[m [mpublic function store(ClientRequest $request): JsonResponse[m
+     public function show($uuid): JsonResponse[m
+     {[m
+         try {[m
+[31m-            $result = $this->clientService->show($uuid);[m
+[32m+[m[32m            $result = $this->service->show($uuid);[m
+ [m
+             return new $this->res(['data' => $result->original], $result->getStatusCode());[m
+         } catch (HttpException $exception) {[m
+[36m@@ -55,7 +56,7 @@[m [mpublic function show($uuid): JsonResponse[m
+     public function update(ClientRequest $request, $uuid): JsonResponse[m
+     {[m
+         try {[m
+[31m-            $result = $this->clientService->update($request, $uuid);[m
+[32m+[m[32m            $result = $this->service->update(ClientDTO::apiRequest($request), $uuid);[m
+ [m
+             return new $this->res(['data' => $result->original], $result->getStatusCode());[m
+         } catch (HttpException $exception) {[m
+[36m@@ -66,7 +67,7 @@[m [mpublic function update(ClientRequest $request, $uuid): JsonResponse[m
+     public function destroy($uuid): JsonResponse[m
+     {[m
+         try {[m
+[31m-            $result = $this->clientService->delete($uuid);[m
+[32m+[m[32m            $result = $this->service->delete($uuid);[m
+ [m
+             return new $this->res(['data' => $result->original], $result->getStatusCode());[m
+         } catch (HttpException $exception) {[m
+[1mdiff --git a/app/Providers/RepositoryServiceProvider.php b/app/Providers/RepositoryServiceProvider.php[m
+[1mindex 3b00d76..d4d494f 100644[m
+[1m--- a/app/Providers/RepositoryServiceProvider.php[m
+[1m+++ b/app/Providers/RepositoryServiceProvider.php[m
+[36m@@ -20,7 +20,7 @@[m [mpublic function register(): void[m
+     public function boot(): void[m
+     {[m
+         $this->app->bind([m
+[31m-            \App\Contracts\ClientServiceInterface::class,[m
+[32m+[m[32m            \App\Contracts\ClientRepositoryInterface::class,[m
+             \App\Repositories\ClientRepository::class,[m
+         );[m
+     }[m
+[1mdiff --git a/app/Repositories/ClientRepository.php b/app/Repositories/ClientRepository.php[m
+[1mindex 1e421da..91fa50b 100644[m
+[1m--- a/app/Repositories/ClientRepository.php[m
+[1m+++ b/app/Repositories/ClientRepository.php[m
+[36m@@ -4,90 +4,91 @@[m
+ [m
+ use App\Models\Client;[m
+ use Illuminate\Http\JsonResponse;[m
+[31m-use App\Contracts\ClientServiceInterface;[m
+[32m+[m[32muse App\dataTransferObject\ClientDTO;[m
+ use App\Http\Resources\ClientResource;[m
+[32m+[m[32muse App\Contracts\ClientRepositoryInterface;[m
+ use Illuminate\Database\Eloquent\ModelNotFoundException;[m
+ use Symfony\Component\HttpKernel\Exception\HttpException;[m
+ [m
+[31m-class ClientRepository implements ClientServiceInterface[m
+[32m+[m[32mclass ClientRepository implements ClientRepositoryInterface[m
+ {[m
+     private $client;[m
+[31m-    private $res;[m
+[32m+[m[32m    private $response;[m
+ [m
+[31m-    public function __construct(Client $client, JsonResponse $res)[m
+[32m+[m[32m    public function __construct(Client $client, JsonResponse $response)[m
+     {[m
+         $this->client = $client;[m
+[31m-        $this->res = $res;[m
+[32m+[m[32m        $this->response = $response;[m
+     }[m
+ [m
+[31m-    public function all()[m
+[32m+[m[32m    public function all(): JsonResponse[m
+     {[m
+         try {[m
+             $client = $this->client->latest()->get();[m
+ [m
+             $resource = ClientResource::collection($client);[m
+ [m
+[31m-            return new $this->res($resource, $this->res::HTTP_OK);[m
+[32m+[m[32m            return new $this->response($resource, $this->response::HTTP_OK);[m
+         } catch (\Throwable) {[m
+[31m-            throw new HttpException($this->res::HTTP_INTERNAL_SERVER_ERROR, 'Terjadi kesalahan di server internal');[m
+[32m+[m[32m            throw new HttpException($this->response::HTTP_INTERNAL_SERVER_ERROR, 'Error server internal');[m
+         }[m
+     }[m
+ [m
+[31m-    public function save($request)[m
+[32m+[m[32m    public function save(ClientDTO $dto): JsonResponse[m
+     {[m
+         $client = new $this->client;[m
+ [m
+[31m-        $client->identifier = $request['identifier'];[m
+[31m-        $client->password = $request['password'];[m
+[32m+[m[32m        $client->identifier = $dto->identifier;[m
+[32m+[m[32m        $client->password = $dto->password;[m
+ [m
+         try {[m
+             $client->save();[m
+ [m
+             $resource = new ClientResource($client);[m
+ [m
+[31m-            return new $this->res($resource, $this->res::HTTP_CREATED);[m
+[32m+[m[32m            return new $this->response($resource, $this->response::HTTP_CREATED);[m
+         } catch (\Throwable) {[m
+[31m-            throw new HttpException($this->res::HTTP_INTERNAL_SERVER_ERROR, 'Terjadi kesalahan di server internal');[m
+[32m+[m[32m            throw new HttpException($this->response::HTTP_INTERNAL_SERVER_ERROR, 'Error server internal');[m
+         }[m
+     }[m
+ [m
+[31m-    public function show($uuid)[m
+[32m+[m[32m    public function show($uuid): JsonResponse[m
+     {[m
+         try {[m
+             $client = $this->client->findOrFail($uuid);[m
+ [m
+             $resource = new ClientResource($client);[m
+ [m
+[31m-            return new $this->res($resource, $this->res::HTTP_OK);[m
+[32m+[m[32m            return new $this->response($resource, $this->response::HTTP_OK);[m
+         } catch (ModelNotFoundException) {[m
+[31m-            throw new HttpException($this->res::HTTP_NOT_FOUND, 'Client tidak ditemukan');[m
+[32m+[m[32m            throw new HttpException($this->response::HTTP_NOT_FOUND, 'Client tidak ditemukan');[m
+         } catch (\Throwable) {[m
+[31m-            throw new HttpException($this->res::HTTP_INTERNAL_SERVER_ERROR, 'Terjadi kesalahan di server internal');[m
+[32m+[m[32m            throw new HttpException($this->response::HTTP_INTERNAL_SERVER_ERROR, 'Error server internal');[m
+         }[m
+     }[m
+ [m
+[31m-    public function update($request, $uuid)[m
+[32m+[m[32m    public function update(ClientDTO $dto, $uuid): JsonResponse[m
+     {[m
+ [m
+         try {[m
+             $client = $this->client->findOrFail($uuid);[m
+ [m
+[31m-            $client->identifier = $request['identifier'];[m
+[31m-            $client->password = $request['password'];[m
+[32m+[m[32m            $client->identifier = $dto->identifier;[m
+[32m+[m[32m            $client->password = $dto->password;[m
+ [m
+             $client->update();[m
+ [m
+             $resource = new ClientResource($client);[m
+ [m
+[31m-            return new $this->res($resource, $this->res::HTTP_CREATED);[m
+[32m+[m[32m            return new $this->response($resource, $this->response::HTTP_CREATED);[m
+         } catch (ModelNotFoundException) {[m
+[31m-            throw new HttpException($this->res::HTTP_NOT_FOUND, 'Client tidak ditemukan');[m
+[32m+[m[32m            throw new HttpException($this->response::HTTP_NOT_FOUND, 'Client tidak ditemukan');[m
+         } catch (\Throwable) {[m
+[31m-            throw new HttpException($this->res::HTTP_INTERNAL_SERVER_ERROR, 'Terjadi kesalahan di server internal');[m
+[32m+[m[32m            throw new HttpException($this->response::HTTP_INTERNAL_SERVER_ERROR, 'Error server internal');[m
+         }[m
+     }[m
+ [m
+[31m-    public function delete($uuid)[m
+[32m+[m[32m    public function delete($uuid): JsonResponse[m
+     {[m
+ [m
+         try {[m
+[36m@@ -95,11 +96,11 @@[m [mpublic function delete($uuid)[m
+ [m
+             $client->delete();[m
+ [m
+[31m-            return new $this->res(true, $this->res::HTTP_OK);[m
+[32m+[m[32m            return new $this->response(true, $this->response::HTTP_OK);[m
+         } catch (ModelNotFoundException) {[m
+[31m-            throw new HttpException($this->res::HTTP_NOT_FOUND, 'Client tidak ditemukan');[m
+[32m+[m[32m            throw new HttpException($this->response::HTTP_NOT_FOUND, 'Client tidak ditemukan');[m
+         } catch (\Throwable) {[m
+[31m-            throw new HttpException($this->res::HTTP_INTERNAL_SERVER_ERROR, 'Terjadi kesalahan di server internal');[m
+[32m+[m[32m            throw new HttpException($this->response::HTTP_INTERNAL_SERVER_ERROR, 'Error server internal');[m
+         }[m
+     }[m
+ }[m
+[1mdiff --git a/app/Services/ClientService.php b/app/Services/ClientService.php[m
+[1mindex b20b3c9..7af670c 100644[m
+[1m--- a/app/Services/ClientService.php[m
+[1m+++ b/app/Services/ClientService.php[m
+[36m@@ -2,52 +2,54 @@[m
+ [m
+ namespace App\Services;[m
+ [m
+[32m+[m[32muse App\dataTransferObject\ClientDTO;[m
+[32m+[m[32muse App\Http\Requests\ClientRequest;[m
+ use App\Models\Client;[m
+[31m-use App\Contracts\ClientServiceInterface;[m
+[31m-use Symfony\Component\HttpKernel\Exception\HttpException;[m
+[32m+[m[32muse App\Contracts\ClientRepositoryInterface;[m
+[32m+[m[32muse Illuminate\Http\JsonResponse;[m
+ [m
+ class ClientService[m
+ {[m
+     private $client;[m
+[31m-    private $clientRepository;[m
+[32m+[m[32m    private $repository;[m
+ [m
+[31m-    public function __construct(Client $client, ClientServiceInterface $clientRepository)[m
+[32m+[m[32m    public function __construct(Client $client, ClientRepositoryInterface $repository)[m
+     {[m
+         $this->client = $client;[m
+[31m-        $this->clientRepository = $clientRepository;[m
+[32m+[m[32m        $this->repository = $repository;[m
+     }[m
+ [m
+[31m-    public function all()[m
+[32m+[m[32m    public function all(): JsonResponse[m
+     {[m
+[31m-        $client = $this->clientRepository->all();[m
+[32m+[m[32m        $client = $this->repository->all();[m
+ [m
+         return $client;[m
+     }[m
+ [m
+[31m-    public function save($request)[m
+[32m+[m[32m    public function save(ClientRequest $request): JsonResponse[m
+     {[m
+[31m-        $client = $this->clientRepository->save($request);[m
+[32m+[m[32m        $client = $this->repository->save($request);[m
+ [m
+         return $client;[m
+     }[m
+ [m
+[31m-    public function show($uuid)[m
+[32m+[m[32m    public function show($uuid): JsonResponse[m
+     {[m
+[31m-        $client = $this->clientRepository->show($uuid);[m
+[32m+[m[32m        $client = $this->repository->show($uuid);[m
+ [m
+         return $client;[m
+     }[m
+ [m
+[31m-    public function update($request, $uuid)[m
+[32m+[m[32m    public function update($request, $uuid): JsonResponse[m
+     {[m
+[31m-        $client = $this->clientRepository->show($uuid);[m
+[32m+[m[32m        $client = $this->repository->update($uuid);[m
+ [m
+         return $client;[m
+     }[m
+ [m
+[31m-    public function delete($uuid)[m
+[32m+[m[32m    public function delete($uuid): JsonResponse[m
+     {[m
+[31m-        $client = $this->clientRepository->delete($uuid);[m
+[32m+[m[32m        $client = $this->repository->delete($uuid);[m
+ [m
+         return $client;[m
+     }[m
+[1mdiff --git a/app/dataTransferObject/ClientDTO.php b/app/dataTransferObject/ClientDTO.php[m
+[1mnew file mode 100644[m
+[1mindex 0000000..da9fb6b[m
+[1m--- /dev/null[m
+[1m+++ b/app/dataTransferObject/ClientDTO.php[m
+[36m@@ -0,0 +1,22 @@[m
+[32m+[m[32m<?php[m
+[32m+[m
+[32m+[m[32mnamespace App\dataTransferObject;[m
+[32m+[m
+[32m+[m[32muse App\Http\Requests\ClientRequest;[m
+[32m+[m
+[32m+[m[32mclass ClientDTO[m
+[32m+[m[32m{[m
+[32m+[m[32m    public function __construct([m
+[32m+[m[32m        public readonly string $identifier,[m
+[32m+[m[32m        public readonly string $password,[m
+[32m+[m[32m    ) {[m
+[32m+[m[32m    }[m
+[32m+[m
+[32m+[m[32m    public static function apiRequest(ClientRequest $request): ClientDTO[m
+[32m+[m[32m    {[m
+[32m+[m[32m        return new self([m
+[32m+[m[32m            identifier: $request->identifier,[m
+[32m+[m[32m            password: $request->password,[m
+[32m+[m[32m        );[m
+[32m+[m[32m    }[m
+[32m+[m[32m}[m

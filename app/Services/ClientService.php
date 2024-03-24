@@ -2,52 +2,54 @@
 
 namespace App\Services;
 
+use App\dataTransferObject\ClientDTO;
+use App\Http\Requests\ClientRequest;
 use App\Models\Client;
-use App\Contracts\ClientServiceInterface;
-use Symfony\Component\HttpKernel\Exception\HttpException;
+use App\Contracts\ClientRepositoryInterface;
+use Illuminate\Http\JsonResponse;
 
 class ClientService
 {
     private $client;
-    private $clientRepository;
+    private $repository;
 
-    public function __construct(Client $client, ClientServiceInterface $clientRepository)
+    public function __construct(Client $client, ClientRepositoryInterface $repository)
     {
         $this->client = $client;
-        $this->clientRepository = $clientRepository;
+        $this->repository = $repository;
     }
 
-    public function all()
+    public function all(): JsonResponse
     {
-        $client = $this->clientRepository->all();
+        $client = $this->repository->all();
 
         return $client;
     }
 
-    public function save($request)
+    public function save(ClientRequest $request): JsonResponse
     {
-        $client = $this->clientRepository->save($request);
+        $client = $this->repository->save($request);
 
         return $client;
     }
 
-    public function show($uuid)
+    public function show($uuid): JsonResponse
     {
-        $client = $this->clientRepository->show($uuid);
+        $client = $this->repository->show($uuid);
 
         return $client;
     }
 
-    public function update($request, $uuid)
+    public function update($request, $uuid): JsonResponse
     {
-        $client = $this->clientRepository->show($uuid);
+        $client = $this->repository->update($uuid);
 
         return $client;
     }
 
-    public function delete($uuid)
+    public function delete($uuid): JsonResponse
     {
-        $client = $this->clientRepository->delete($uuid);
+        $client = $this->repository->delete($uuid);
 
         return $client;
     }

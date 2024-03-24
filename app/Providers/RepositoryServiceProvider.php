@@ -20,7 +20,7 @@ class RepositoryServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->app->bind(
-            \App\Contracts\ClientServiceInterface::class,
+            \App\Contracts\ClientRepositoryInterface::class,
             \App\Repositories\ClientRepository::class,
         );
     }
