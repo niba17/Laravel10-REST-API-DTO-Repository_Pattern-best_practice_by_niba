@@ -2,11 +2,9 @@
 
 namespace App\Services;
 
-use App\dataTransferObject\ClientDTO;
-use App\Http\Requests\ClientRequest;
 use App\Models\Client;
-use App\Contracts\ClientRepositoryInterface;
 use Illuminate\Http\JsonResponse;
+use App\Contracts\ClientRepositoryInterface;
 
 class ClientService
 {
@@ -26,7 +24,7 @@ class ClientService
         return $client;
     }
 
-    public function save(ClientRequest $request): JsonResponse
+    public function save($request): JsonResponse
     {
         $client = $this->repository->save($request);
 

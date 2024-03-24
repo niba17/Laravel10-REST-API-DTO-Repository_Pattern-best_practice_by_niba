@@ -4,7 +4,6 @@ namespace App\Repositories;
 
 use App\Models\Client;
 use Illuminate\Http\JsonResponse;
-use App\dataTransferObject\ClientDTO;
 use App\Http\Resources\ClientResource;
 use App\Contracts\ClientRepositoryInterface;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -34,7 +33,7 @@ class ClientRepository implements ClientRepositoryInterface
         }
     }
 
-    public function save(ClientDTO $dto): JsonResponse
+    public function save($dto): JsonResponse
     {
         $client = new $this->client;
 
@@ -67,7 +66,7 @@ class ClientRepository implements ClientRepositoryInterface
         }
     }
 
-    public function update(ClientDTO $dto, $uuid): JsonResponse
+    public function update($dto, $uuid): JsonResponse
     {
 
         try {
