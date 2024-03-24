@@ -33,14 +33,15 @@ class ClientRepository implements ClientRepositoryInterface
         }
     }
 
-    public function save($dto): JsonResponse
+    public function save($request): JsonResponse
     {
-        $client = new $this->client;
-
-        $client->identifier = $dto->identifier;
-        $client->password = $dto->password;
 
         try {
+            $client = new $this->client;
+
+            $client->identifier = $request->identifier;
+            $client->password = $request->password;
+
             $client->save();
 
             $resource = new ClientResource($client);
@@ -66,14 +67,14 @@ class ClientRepository implements ClientRepositoryInterface
         }
     }
 
-    public function update($dto, $uuid): JsonResponse
+    public function update($request, $uuid): JsonResponse
     {
 
         try {
             $client = $this->client->findOrFail($uuid);
 
-            $client->identifier = $dto->identifier;
-            $client->password = $dto->password;
+            $client->identifier = $request->identifier;
+            $client->password = $request->password;
 
             $client->update();
 

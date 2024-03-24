@@ -10,19 +10,19 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class ClientController extends Controller
 {
-    private $service;
+    private $repository;
     private $res;
 
-    public function __construct(ClientRepositoryInterface $service, JsonResponse $res)
+    public function __construct(ClientRepositoryInterface $repository, JsonResponse $res)
     {
-        $this->service = $service;
+        $this->repository = $repository;
         $this->res = $res;
     }
 
     public function index(): JsonResponse
     {
         try {
-            $result = $this->service->all();
+            $result = $this->repository->all();
 
             return new $this->res(['data' => $result->original], $result->getStatusCode());
         } catch (HttpException $exception) {
@@ -34,7 +34,7 @@ class ClientController extends Controller
     public function store(ClientRequest $request): JsonResponse
     {
         try {
-            $result = $this->service->save(ClientDTO::apiRequest($request));
+            $result = $this->repository->save(ClientDTO::apiRequest($request));
 
             return new $this->res(['data' => $result->original], $result->getStatusCode());
         } catch (HttpException $exception) {
@@ -45,7 +45,7 @@ class ClientController extends Controller
     public function show($uuid): JsonResponse
     {
         try {
-            $result = $this->service->show($uuid);
+            $result = $this->repository->show($uuid);
 
             return new $this->res(['data' => $result->original], $result->getStatusCode());
         } catch (HttpException $exception) {
@@ -56,7 +56,7 @@ class ClientController extends Controller
     public function update(ClientRequest $request, $uuid): JsonResponse
     {
         try {
-            $result = $this->service->update(ClientDTO::apiRequest($request), $uuid);
+            $result = $this->repository->update(ClientDTO::apiRequest($request), $uuid);
 
             return new $this->res(['data' => $result->original], $result->getStatusCode());
         } catch (HttpException $exception) {
@@ -67,7 +67,7 @@ class ClientController extends Controller
     public function destroy($uuid): JsonResponse
     {
         try {
-            $result = $this->service->delete($uuid);
+            $result = $this->repository->delete($uuid);
 
             return new $this->res(['data' => $result->original], $result->getStatusCode());
         } catch (HttpException $exception) {

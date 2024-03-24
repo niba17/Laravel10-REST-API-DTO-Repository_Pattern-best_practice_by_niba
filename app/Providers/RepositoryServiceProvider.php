@@ -11,7 +11,10 @@ class RepositoryServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        $this->app->bind(
+            \App\Contracts\ClientRepositoryInterface::class,
+            \App\Repositories\ClientRepository::class,
+        );
     }
 
     /**
@@ -19,9 +22,6 @@ class RepositoryServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        $this->app->bind(
-            \App\Contracts\ClientRepositoryInterface::class,
-            \App\Repositories\ClientRepository::class,
-        );
+        //
     }
 }
