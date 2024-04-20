@@ -1,6 +1,6 @@
 <?php
 
-namespace App\dataTransferObject;
+namespace App\DataTransferObject;
 
 use App\Http\Requests\ClientRequest;
 
