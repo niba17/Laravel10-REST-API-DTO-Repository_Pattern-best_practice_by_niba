@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\JsonResponse;
 use App\Http\Requests\ClientRequest;
-use App\dataTransferObject\ClientDTO;
+use App\DataTransferObject\ClientDTO;
 use App\Contracts\ClientRepositoryInterface;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
